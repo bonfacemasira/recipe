@@ -32,6 +32,65 @@ async function main() {
   });
 
   console.log({ recipe1, recipe2 });
+
+  // Create two users with profiles and posts
+  const user1 = await prisma.user.upsert({
+    where: { email: 'alice@example.com' },
+    update: {},
+    create: {
+      email: 'alice@example.com',
+      name: 'Alice',
+      profile: {
+        create: {
+          bio: 'Food lover and blogger',
+        },
+      },
+      posts: {
+        create: [
+          {
+            title: 'Alice’s Favorite Pasta',
+            content: 'A delicious pasta recipe I love.',
+            published: true,
+          },
+          {
+            title: 'Exploring Indian Cuisine',
+            content: 'Sharing my experience with Indian dishes.',
+            published: false,
+          },
+        ],
+      },
+    },
+  });
+
+  const user2 = await prisma.user.upsert({
+    where: { email: 'bob@example.com' },
+    update: {},
+    create: {
+      email: 'bob@example.com',
+      name: 'Bob',
+      profile: {
+        create: {
+          bio: 'Chef and food enthusiast',
+        },
+      },
+      posts: {
+        create: [
+          {
+            title: 'Mastering Curry',
+            content: 'Tips for making the perfect curry.',
+            published: true,
+          },
+          {
+            title: 'The Art of Baking Bread',
+            content: 'Baking bread at home is easier than you think!',
+            published: true,
+          },
+        ],
+      },
+    },
+  });
+
+  console.log({ user1, user2 });
 }
 
 // execute the main function
